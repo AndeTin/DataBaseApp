@@ -11,8 +11,10 @@ function App() {
   }, []);
 
   const fetchData = (query = '') => {
+    console.log(`Fetching data with query: ${query}`); // Log for debugging
     axios.get(`http://localhost:4001/api/data?search=${query}`)
       .then(response => {
+        console.log('Response data:', response.data); // Log response for debugging
         setData(response.data);
       })
       .catch(error => {
@@ -26,6 +28,7 @@ function App() {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+    console.log(`Submitting search for term: ${searchTerm}`); // Log for debugging
     fetchData(searchTerm);
   };
 

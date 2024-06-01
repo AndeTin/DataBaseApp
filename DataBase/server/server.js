@@ -27,9 +27,18 @@ db.connect(err => {
 
 // 定义一个API端点
 app.get('/api/data', (req, res) => {
-  const query = 'SELECT * FROM `location_info`'; // 你的查询语句
+  const searchQuery = req.query.search || ''; // 获取搜索查询参数
+  let query = 'SELECT * FROM `location_info`'; // 你的查询语句
+
+  if (searchQuery) {
+    query += ` WHERE location_name LIKE '%${searchQuery}%' OR address LIKE '%${searchQuery}%'`; // 搜索name和address列
+  }
+
+  console.log(`Executing query: ${query}`); // Log the query for debugging
+
   db.query(query, (err, results) => {
     if (err) {
+      console.error('Error executing query:', err);
       res.status(500).send(err);
     } else {
       res.json(results);

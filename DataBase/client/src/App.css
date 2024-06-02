@@ -1,38 +1,102 @@
-.App {
-  text-align: center;
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #333; /* Dark gray background */
+  color: white; /* White text */
+  font-family: Arial, sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App, .Home, .SearchList, .LocationInfo {
+  background-color: #333; /* Dark gray background */
+  color: white; /* White text */
+  min-height: 100vh; /* Ensure the div takes full height */
+  padding: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+input, button {
+  color: black; /* Black text for input and button for better readability */
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+input::placeholder {
+  color: #ccc; /* Lighter placeholder color */
+}
+
+button {
+  background-color: #555; /* Slightly lighter gray for button */
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #777; /* Lighter gray on hover */
+}
+
+header {
+  margin-bottom: 20px;
+}
+
+h1 {
+  margin: 0;
+  padding: 0;
+}
+
+form {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+input {
+  margin-right: 10px;
+  padding: 5px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.image-placeholder-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.image-placeholder {
+  background-color: #999; /* Light gray color */
+  width: 100%;
+  max-width: 300px; /* Adjust size as needed */
+  height: 200px; /* Adjust size as needed */
+  border-radius: 5px;
+}
+
+.location-item {
+  margin: 10px 0;
+  border-bottom: 1px solid #444; /* Separate each item with a border */
+  padding-bottom: 10px; /* Add some padding below each item */
+}
+
+.location-title {
+  color: white; /* White color for the title */
+  font-weight: bold;
+  display: block; /* Make the title block-level for better layout */
+}
+
+.location-details {
+  margin-top: 5px;
+}
+
+.location-details p {
+  margin: 2px 0; /* Reduce margin for detail lines */
+}
+
+.see-more-button {
+  background-color: #1e90ff; /* Blue color for the button */
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  color: white; /* White text for the button */
+  margin-top: 5px; /* Space between the button and details */
+}
+
+.see-more-button:hover {
+  background-color: #63a4ff; /* Lighter blue on hover */
 }

@@ -46,6 +46,25 @@ app.get('/api/data', (req, res) => {
   });
 });
 
+// 新增的API端点，用于根据ID获取特定位置的信息
+app.get('/api/location/:id', (req, res) => {
+  const locationId = req.params.id;
+  const query = 'SELECT * FROM `location_info` WHERE id = ?';
+
+  console.log(`Executing query: ${query} with ID: ${locationId}`); // Log the query for debugging
+
+  db.query(query, [locationId], (err, results) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      res.status(500).send(err);
+    } else if (results.length === 0) {
+      res.status(404).send('Location not found');
+    } else {
+      res.json(results[0]); // Assuming IDs are unique and returning the first match
+    }
+  });
+});
+
 // 启动服务器
 app.listen(port, () => {
   console.log(`服务器正在运行在 http://localhost:${port}`);

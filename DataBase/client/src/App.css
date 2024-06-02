@@ -23,14 +23,15 @@ input::placeholder {
 }
 
 button {
-  background-color: #555; /* Slightly lighter gray for button */
+  background-color: #1e90ff; /* Blue color for buttons */
   border: none;
   padding: 10px;
   cursor: pointer;
+  color: white; /* White text for buttons */
 }
 
 button:hover {
-  background-color: #777; /* Lighter gray on hover */
+  background-color: #63a4ff; /* Lighter blue on hover */
 }
 
 header {
@@ -99,4 +100,30 @@ input {
 
 .see-more-button:hover {
   background-color: #63a4ff; /* Lighter blue on hover */
+}
+
+.button-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.LocationInfo .button-container button {
+  background-color: #1e90ff; /* Blue color for buttons */
+  border: none;
+  padding: 10px 20px;
+  margin-left: 10px;
+  cursor: pointer;
+  color: white; /* White text for buttons */
+}
+
+.LocationInfo .button-container button:hover {
+  background-color: #63a4ff; /* Lighter blue on hover */
+}
+
+.LocationInfo .description-content {
+  white-space: pre-wrap; /* Preserves whitespace and wraps long lines */
+  word-wrap: break-word; /* Breaks long words */
+  text-indent: 20px; /* Indent the first line of the paragraph */
+  margin-top: 5px; /* Space between title and content */
 }

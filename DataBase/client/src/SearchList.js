@@ -67,7 +67,7 @@ function SearchList() {
           <div key={location.id} className="location-item">
             <span className="location-title">{location.location_name}</span>
             <div className="location-details">
-              <p>開幕時間: {location.opening_time}</p>
+              <p>開門時間: {location.opening_time}</p>
               <p>打烊時間: {location.closing_time}</p>
               <p>地址: {location.address}</p>
             </div>

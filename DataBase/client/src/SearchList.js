@@ -76,7 +76,7 @@ function SearchList() {
               onClick={() => navigate(`/location/${location.id}`)} 
               style={{ marginLeft: '10px' }}
             >
-              See More
+              更多資訊
             </button>
           </div>
         ))}

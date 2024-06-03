@@ -173,3 +173,7 @@ input {
   text-decoration: none;
 }
 
+/* Add margin to login button */
+.login-button {
+  margin-left: 10px;
+}

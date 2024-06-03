@@ -51,7 +51,14 @@ function Home() {
             style={{ marginRight: '10px' }}
           />
           <button type="submit">Search</button>
-          <button type="button" onClick={handleLogin} className="login-button">Login</button>
+          <button
+            type="button"
+            onClick={handleLogin}
+            className="login-button"
+            style={{ marginLeft: '10px' }}  // Add margin-left for spacing
+          >
+            Login
+          </button>
         </form>
       </header>
       <div className="map-container">

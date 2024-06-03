@@ -34,45 +34,57 @@ const SignUp = () => {
     <div className="container">
       <h2>註冊</h2>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="名字"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="姓氏"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
-        <input
-          type="email"
-          placeholder="電子郵件"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <select
-          value={gender}
-          onChange={(e) => setGender(e.target.value)}
-        >
-          <option value="" disabled selected>選擇性別</option>
-          <option value="male">男</option>
-          <option value="female">女</option>
-          <option value="other">其他</option>
-        </select>
-        <input
-          type="date"
-          placeholder="生日"
-          value={birthday}
-          onChange={(e) => setBirthday(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="密碼"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div>
+          <input
+            type="text"
+            placeholder="名字"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            placeholder="姓氏"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+        </div>
+        <div>
+          <input
+            type="email"
+            placeholder="電子郵件"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div>
+          <select
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+          >
+            <option value="" disabled selected>選擇性別</option>
+            <option value="male">男</option>
+            <option value="female">女</option>
+            <option value="other">其他</option>
+          </select>
+        </div>
+        <div>
+          <input
+            type="date"
+            placeholder="生日"
+            value={birthday}
+            onChange={(e) => setBirthday(e.target.value)}
+          />
+        </div>
+        <div>
+          <input
+            type="password"
+            placeholder="密碼"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
         <button type="submit">註冊</button>
       </form>
       <div className="switch">

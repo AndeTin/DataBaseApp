@@ -29,7 +29,7 @@ function Home() {
   return (
     <div className="Home">
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Welcome to the Home Page</h1>
+        <h1>山上優雅</h1>
         <form onSubmit={handleSearchSubmit} style={{ display: 'flex', alignItems: 'center' }}>
           <input
             type="text"

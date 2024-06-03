@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './SignUp.css'; // Import the CSS file
 
 const SignUp = ({ switchToLogin }) => {
   // Define state variables for form inputs
@@ -27,8 +28,8 @@ const SignUp = ({ switchToLogin }) => {
   return (
     <div className="container">
       <h2>註冊</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
+      <form onSubmit={handleSubmit} className="sign-up-form">
+        <div className="form-group"> {/* Use the form-group class here */}
           <input
             type="text"
             placeholder="名字"
@@ -36,7 +37,7 @@ const SignUp = ({ switchToLogin }) => {
             onChange={(e) => setFirstName(e.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group"> {/* Use the form-group class here */}
           <input
             type="text"
             placeholder="姓氏"
@@ -44,7 +45,7 @@ const SignUp = ({ switchToLogin }) => {
             onChange={(e) => setLastName(e.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group"> {/* Use the form-group class here */}
           <input
             type="email"
             placeholder="電子郵件"
@@ -52,7 +53,7 @@ const SignUp = ({ switchToLogin }) => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group"> {/* Use the form-group class here */}
           <select
             value={gender}
             onChange={(e) => setGender(e.target.value)}
@@ -63,7 +64,7 @@ const SignUp = ({ switchToLogin }) => {
             <option value="other">其他</option>
           </select>
         </div>
-        <div>
+        <div className="form-group"> {/* Use the form-group class here */}
           <input
             type="date"
             placeholder="生日"
@@ -71,7 +72,7 @@ const SignUp = ({ switchToLogin }) => {
             onChange={(e) => setBirthday(e.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group"> {/* Use the form-group class here */}
           <input
             type="password"
             placeholder="密碼"

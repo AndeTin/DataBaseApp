@@ -58,6 +58,24 @@ app.post('/api/register', (req, res) => {
   });
 });
 
+// API endpoint to search data
+app.get('/api/data', (req, res) => {
+  const searchTerm = req.query.search || '';
+  const query = `
+    SELECT * FROM location_info 
+    WHERE location_name LIKE ? OR address LIKE ?
+  `;
+
+  db.query(query, [`%${searchTerm}%`, `%${searchTerm}%`], (err, results) => {
+    if (err) {
+      console.error('Error searching data:', err);
+      res.status(500).send(err);
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

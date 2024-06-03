@@ -49,7 +49,7 @@ function SearchList() {
   return (
     <div className="SearchList">
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Data from MySQL Database</h1>
+        <h1>查詢結果</h1>
         <form onSubmit={handleSearchSubmit} style={{ display: 'flex', alignItems: 'center' }}>
           <input
             type="text"

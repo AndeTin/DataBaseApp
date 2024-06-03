@@ -109,7 +109,7 @@ const SignUp = ({ switchToLogin }) => {
             value={gender}
             onChange={(e) => setGender(e.target.value)}
           >
-            <option value="" disabled selected>選擇性別</option>
+            <option value="" disabled defaultValue>選擇性別</option>
             <option value="male">男</option>
             <option value="female">女</option>
             <option value="other">其他</option>
@@ -137,6 +137,7 @@ const SignUp = ({ switchToLogin }) => {
       <div className="switch">
         已經有帳號了？ <a href="javascript:void(0)" onClick={switchToLogin}>登錄</a>
       </div>
+      <button onClick={() => window.location.href = '/'}>返回首頁</button>
     </div>
   );
 };

@@ -27,6 +27,56 @@ db.connect(err => {
   console.log('Connected successfully');
 });
 
+// API endpoint to search location data
+app.get('/api/location', (req, res) => {
+  const searchTerm = req.query.search || '';
+  const query = `
+  SELECT 
+    location_info.* 
+  FROM 
+    location_info 
+  WHERE 
+    location_info.location_name LIKE ? OR location_info.address LIKE ?
+
+  `;
+
+  db.query(query, [`%${searchTerm}%`, `%${searchTerm}%`], (err, results) => {
+    if (err) {
+      console.error('Error searching location data:', err);
+      res.status(500).send(err);
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+// API endpoint to search trail data
+app.get('/api/trail', (req, res) => {
+  const searchTerm = req.query.search || '';
+  const query = `
+    SELECT 
+      trail.tr_cname, 
+      city.city, 
+      district.district,
+      trail.tr_length
+    FROM 
+      trail 
+      LEFT JOIN city ON trail.city_id = city.city_id 
+      LEFT JOIN district ON trail.district_id = district.district_id 
+    WHERE 
+      trail.tr_cname LIKE ? OR city.city LIKE ? OR district.district LIKE ?
+  `;
+
+  db.query(query, [`%${searchTerm}%`, `%${searchTerm}%`,`%${searchTerm}%`, `%${searchTerm}%`], (err, results) => {
+    if (err) {
+      console.error('Error searching trail data:', err);
+      res.status(500).send(err);
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 // API endpoint to check if an email already exists
 app.post('/api/check-email', (req, res) => {
   const { email } = req.body;
@@ -54,24 +104,6 @@ app.post('/api/register', (req, res) => {
       res.status(500).send(err);
     } else {
       res.json({ success: true });
-    }
-  });
-});
-
-// API endpoint to search data
-app.get('/api/data', (req, res) => {
-  const searchTerm = req.query.search || '';
-  const query = `
-    SELECT * FROM location_info 
-    WHERE location_name LIKE ? OR address LIKE ?
-  `;
-
-  db.query(query, [`%${searchTerm}%`, `%${searchTerm}%`], (err, results) => {
-    if (err) {
-      console.error('Error searching data:', err);
-      res.status(500).send(err);
-    } else {
-      res.json(results);
     }
   });
 });

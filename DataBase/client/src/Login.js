@@ -10,6 +10,7 @@ const Login = ({ onLoginSuccess, switchToSignUp }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Send login request to server
     fetch('http://localhost:4001/api/login', {
       method: 'POST',
       headers: {
@@ -20,11 +21,19 @@ const Login = ({ onLoginSuccess, switchToSignUp }) => {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
+          // Login successful
           setMessage(data.message);
+
+          // Store user email in local storage
           localStorage.setItem('userEmail', email);
+
+          // Call the onLoginSuccess function
           onLoginSuccess();
+
+          // Navigate to home page
           navigate('/');
         } else {
+          // Login failed
           setMessage(data.message);
         }
       })
@@ -56,10 +65,11 @@ const Login = ({ onLoginSuccess, switchToSignUp }) => {
         </div>
         <button type="submit">Login</button>
       </form>
-      <div>{message}</div>
+      <div>{message}</div> {/* Display login message */}
       <div className="switch">
-        Don't have an account? <button onClick={switchToSignUp} className="link-button">Sign Up</button>
+        Don't have an account? <a href="javascript:void(0)" onClick={switchToSignUp}>Sign Up</a>
       </div>
+      <button onClick={() => navigate('/')}>Back to Home</button> {/* Back to Home button */}
     </div>
   );
 };

@@ -76,6 +76,27 @@ app.get('/api/data', (req, res) => {
   });
 });
 
+// API endpoint for user login
+app.post('/api/login', (req, res) => {
+  const { email, password } = req.body;
+  const query = 'SELECT * FROM user WHERE User_email = ? AND User_passwd = ?';
+  
+  db.query(query, [email, password], (err, results) => {
+    if (err) {
+      console.error('Error logging in:', err);
+      res.status(500).send(err);
+    } else {
+      if (results.length > 0) {
+        // Login successful
+        res.json({ success: true, message: 'Login successful!', loggedIn: true });
+      } else {
+        // Login failed
+        res.json({ success: false, message: 'Email or password is incorrect', loggedIn: false });
+      }
+    }
+  });
+});
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

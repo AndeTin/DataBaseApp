@@ -1,13 +1,13 @@
 const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
-const bcrypt = require('bcrypt');
 const axios = require('axios');
+const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 
 const app = express();
 const port = 4001;
-const GOOGLE_MAPS_API_KEY = 'AIzaSyC3IGPH_lg81YqEOY6tik4DV5vMAaCv-zE'; // Replace with your actual API key
+const GOOGLE_MAPS_API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY'; // Replace with your actual API key
 
 app.use(cors());
 app.use(express.json());
@@ -181,4 +181,15 @@ app.post('/login', (req, res) => {
         return res.status(500).send('Server error');
       }
       if (!isMatch) {
-        return
+        return res.status(400).json({ success: false, message: 'Invalid password' });
+      }
+
+      res.json({ success: true });
+    });
+  });
+});
+
+// 启动服务器
+app.listen(port, () => {
+  console.log(`服务器运行在 http://localhost:${port}`);
+});

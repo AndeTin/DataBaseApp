@@ -19,6 +19,10 @@ function App() {
     setShowSignUp(true);
   };
 
+  const switchToLogin = () => {
+    setShowSignUp(false);
+  };
+
   return (
     <Router>
       <div className="App">
@@ -30,7 +34,7 @@ function App() {
             path="/login" 
             element={
               showSignUp ? (
-                <SignUp />
+                <SignUp switchToLogin={switchToLogin} />
               ) : (
                 <Login onLoginSuccess={handleLoginSuccess} switchToSignUp={switchToSignUp} />
               )

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const SignUp = () => {
+const SignUp = ({ switchToLogin }) => {
   // Define state variables for form inputs
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -22,12 +22,6 @@ const SignUp = () => {
       birthday,
       password
     });
-  };
-
-  // Function to switch to the login form
-  const switchToLogin = () => {
-    // Implement the logic to switch to the login form here
-    console.log('Switching to login form...');
   };
 
   return (

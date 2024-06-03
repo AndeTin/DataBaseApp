@@ -27,6 +27,10 @@ function Home() {
     navigate(`/search?query=${searchTerm}`);
   };
 
+  const handleLogin = () => {
+    navigate('/login');
+  };
+
   useEffect(() => {
     fetch('http://localhost:4001/api/locations')
       .then(response => response.json())
@@ -47,6 +51,7 @@ function Home() {
             style={{ marginRight: '10px' }}
           />
           <button type="submit">Search</button>
+          <button type="button" onClick={handleLogin} className="login-button">Login</button>
         </form>
       </header>
       <div className="map-container">

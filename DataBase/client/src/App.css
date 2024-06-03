@@ -127,3 +127,49 @@ input {
   text-indent: 20px; /* Indent the first line of the paragraph */
   margin-top: 5px; /* Space between title and content */
 }
+
+/* Styles for Login and Signup containers */
+.container {
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  width: 300px;
+  margin: auto;
+  color: #000;
+}
+
+.container h2 {
+  margin-bottom: 20px;
+}
+
+.container input, .container select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  box-sizing: border-box;
+}
+
+.container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007BFF;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.container button:hover {
+  background-color: #0056b3;
+}
+
+.switch {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.switch a {
+  color: #007BFF;
+  text-decoration: none;
+}
+

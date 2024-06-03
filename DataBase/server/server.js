@@ -37,7 +37,6 @@ app.get('/api/location', (req, res) => {
     location_info 
   WHERE 
     location_info.location_name LIKE ? OR location_info.address LIKE ?
-
   `;
 
   db.query(query, [`%${searchTerm}%`, `%${searchTerm}%`], (err, results) => {
@@ -150,7 +149,39 @@ app.get('/api/location/:id', (req, res) => {
   });
 });
 
-// Start the server
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+app.get('/api/trail/:id', (req, res) => {
+  const trailId = req.params.id;
+  const query = `
+    SELECT 
+      trail.tr_cname, 
+      city.city, 
+      district.district,
+      trail.tr_length,
+      trail.tr_alt,
+      trail.tr_alt_low,
+      trail.tr_permit_stop,
+      trail.tr_pave,
+      trail.tr_dif_class,
+      trail.tr_tour,
+      trail.tr_best_season
+    FROM 
+      trail 
+      LEFT JOIN city ON trail.city_id = city.city_id 
+      LEFT JOIN district ON trail.district_id = district.district_id
+    WHERE 
+      trail.trailid = ?
+  `;
+
+  db.query(query, [trailId], (err, results) => {
+    if (err) {
+      console.error('Error fetching trail details:', err);
+      res.status(500).send(err);
+    } else {
+      if (results.length > 0) {
+        res.json(results[0]);
+      } else {
+        res.status(404).json({ message: 'Trail not found' });
+      }
+    }
+  });
 });

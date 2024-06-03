@@ -1,52 +1,56 @@
-/* Login.css */
-
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background-color: #333; /* Dark gray background */
-    color: white; /* White text */
-    font-family: Arial, sans-serif;
-  }
-  
-  .container {
-    background-color: #333; /* Dark gray background */
-    color: white; /* White text */
-    min-height: 100vh; /* Ensure the div takes full height */
+.container {
+    width: 300px;
+    margin: 0 auto;
     padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   
-  input, button {
-    color: black; /* Black text for input and button for better readability */
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
   }
   
-  input::placeholder {
-    color: #ccc; /* Lighter placeholder color */
-  }
-  
-  button {
-    background-color: #1e90ff; /* Blue color for buttons */
-    border: none;
+  input[type="email"],
+  input[type="password"],
+  button[type="submit"] {
+    display: block;
+    width: 100%;
     padding: 10px;
-    cursor: pointer;
-    color: white; /* White text for buttons */
+    margin-bottom: 15px;
+    font-size: 16px;
   }
   
-  button:hover {
-    background-color: #63a4ff; /* Lighter blue on hover */
+  button[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #0056b3;
   }
   
   .switch {
     text-align: center;
-    margin-top: 10px;
+    margin-top: 15px;
   }
   
   .switch a {
-    color: #1e90ff; /* Blue color for links */
+    color: #007bff;
     text-decoration: none;
   }
   
   .switch a:hover {
-    text-decoration: underline; /* Underline links on hover */
+    text-decoration: underline;
+  }
+  
+  .message {
+    text-align: center;
+    margin-top: 15px;
+    color: red;
   }
   

@@ -72,6 +72,7 @@ const Login = ({ onLoginSuccess, switchToSignUp }) => {
       <div className="switch">
         沒有帳號？ <a href="javascript:void(0)" onClick={switchToSignUp}>註冊</a>
       </div>
+      <button onClick={() => navigate('/')}>返回首頁</button> {/* Back to Home button */}
     </div>
   );
 };

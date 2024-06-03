@@ -27,18 +27,33 @@ db.connect(err => {
   console.log('Connected successfully');
 });
 
-// API endpoint to get all location information with coordinates
-app.get('/api/locations', (req, res) => {
-  const query = 'SELECT * FROM `location_info` WHERE latitude IS NOT NULL AND longitude IS NOT NULL';
-
-  console.log(`Executing query: ${query}`); // Log the query for debugging
-
-  db.query(query, (err, results) => {
+// API endpoint to check if an email already exists
+app.post('/api/check-email', (req, res) => {
+  const { email } = req.body;
+  const query = 'SELECT COUNT(*) AS count FROM user WHERE User_email = ?';
+  
+  db.query(query, [email], (err, results) => {
     if (err) {
-      console.error('Error executing query:', err);
+      console.error('Error checking email:', err);
       res.status(500).send(err);
     } else {
-      res.json(results);
+      const { count } = results[0];
+      res.json({ exists: count > 0 });
+    }
+  });
+});
+
+// API endpoint to register a new user
+app.post('/api/register', (req, res) => {
+  const { User_first_name, User_last_name, User_email, User_gender, User_birthday, User_passwd } = req.body;
+  const query = 'INSERT INTO user (User_first_name, User_last_name, User_email, User_gender, User_birthday, User_passwd, User_permission) VALUES (?, ?, ?, ?, ?, ? , 0)';
+  
+  db.query(query, [User_first_name, User_last_name, User_email, User_gender, User_birthday, User_passwd], (err, results) => {
+    if (err) {
+      console.error('Error registering user:', err);
+      res.status(500).send(err);
+    } else {
+      res.json({ success: true });
     }
   });
 });

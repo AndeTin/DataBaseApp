@@ -13,9 +13,7 @@ const SignUp = ({ switchToLogin }) => {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Perform form validation and submission logic here
-    // For now, just log the form data to console
-    console.log({
+    console.log("Form submitted with state values:", {
       firstName,
       lastName,
       email,
@@ -23,13 +21,66 @@ const SignUp = ({ switchToLogin }) => {
       birthday,
       password
     });
+
+    // Check if any of the fields are empty
+    if (!firstName || !lastName || !email || !gender || !birthday || !password) {
+      alert('Please fill out all fields');
+      return;
+    }
+
+    // Check if email already exists in the database
+    fetch('http://localhost:4001/api/check-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.exists) {
+        alert('Email address is already registered');
+      } else {
+        // Register the user
+        fetch('http://localhost:4001/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            User_first_name: firstName,
+            User_last_name: lastName,
+            User_email: email,
+            User_gender: gender,
+            User_birthday: birthday,
+            User_passwd: password
+          }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('You have successfully registered');
+          } else {
+            alert('Registration failed. Please try again.');
+          }
+        })
+        .catch(error => {
+          console.error('Error registering user:', error);
+          alert('Error registering user. Please try again.');
+        });
+      }
+    })
+    .catch(error => {
+      console.error('Error checking email:', error);
+      alert('Error checking email. Please try again.');
+    });
   };
 
   return (
     <div className="container">
       <h2>註冊</h2>
-      <form onSubmit={handleSubmit} className="sign-up-form">
-        <div className="form-group"> {/* Use the form-group class here */}
+      <form className="form" onSubmit={handleSubmit}>
+        <div className="input-container">
           <input
             type="text"
             placeholder="名字"
@@ -37,7 +88,7 @@ const SignUp = ({ switchToLogin }) => {
             onChange={(e) => setFirstName(e.target.value)}
           />
         </div>
-        <div className="form-group"> {/* Use the form-group class here */}
+        <div className="input-container">
           <input
             type="text"
             placeholder="姓氏"
@@ -45,7 +96,7 @@ const SignUp = ({ switchToLogin }) => {
             onChange={(e) => setLastName(e.target.value)}
           />
         </div>
-        <div className="form-group"> {/* Use the form-group class here */}
+        <div className="input-container">
           <input
             type="email"
             placeholder="電子郵件"
@@ -53,7 +104,7 @@ const SignUp = ({ switchToLogin }) => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="form-group"> {/* Use the form-group class here */}
+        <div className="input-container">
           <select
             value={gender}
             onChange={(e) => setGender(e.target.value)}
@@ -64,7 +115,8 @@ const SignUp = ({ switchToLogin }) => {
             <option value="other">其他</option>
           </select>
         </div>
-        <div className="form-group"> {/* Use the form-group class here */}
+        <div className="input-container">
+            <h4>生日</h4>
           <input
             type="date"
             placeholder="生日"
@@ -72,7 +124,7 @@ const SignUp = ({ switchToLogin }) => {
             onChange={(e) => setBirthday(e.target.value)}
           />
         </div>
-        <div className="form-group"> {/* Use the form-group class here */}
+        <div className="input-container">
           <input
             type="password"
             placeholder="密碼"

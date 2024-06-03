@@ -35,17 +35,17 @@ function Home() {
             type="text"
             value={searchTerm}
             onChange={handleSearchChange}
-            placeholder="Search..."
+            placeholder="景點名稱或地點..."
             style={{ marginRight: '10px' }}
           />
-          <button type="submit">Search</button>
+          <button type="submit">搜尋</button>
           <button
             type="button"
             onClick={handleLogin}
             className="login-button"
             style={{ marginLeft: '10px' }}  // Add margin-left for spacing
           >
-            Login
+            登入/註冊會員
           </button>
         </form>
       </header>

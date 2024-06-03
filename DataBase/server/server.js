@@ -97,6 +97,27 @@ app.post('/api/login', (req, res) => {
   });
 });
 
+// API endpoint to fetch location information by ID
+app.get('/api/location/:id', (req, res) => {
+  const { id } = req.params;
+  const query = 'SELECT * FROM location_info WHERE id = ?';
+
+  db.query(query, [id], (err, results) => {
+    if (err) {
+      console.error('Error fetching location info:', err);
+      res.status(500).send(err);
+    } else {
+      if (results.length > 0) {
+        // Location found
+        res.json(results[0]);
+      } else {
+        // Location not found
+        res.status(404).json({ message: 'Location not found' });
+      }
+    }
+  });
+});
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

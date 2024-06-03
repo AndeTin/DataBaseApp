@@ -1,9 +1,11 @@
 const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
+const axios = require('axios');
 
 const app = express();
 const port = 4001;
+const GOOGLE_MAPS_API_KEY = 'AIzaSyC3IGPH_lg81YqEOY6tik4DV5vMAaCv-zE'; // Replace with your actual API key
 
 app.use(cors());
 app.use(express.json());
@@ -25,42 +27,56 @@ db.connect(err => {
   console.log('连接成功');
 });
 
-// 定义一个API端点
-app.get('/api/data', (req, res) => {
-  const searchQuery = req.query.search || ''; // 获取搜索查询参数
-  let query = 'SELECT * FROM `location_info`'; // 你的查询语句
-
-  if (searchQuery) {
-    query += ` WHERE location_name LIKE '%${searchQuery}%' OR address LIKE '%${searchQuery}%'`; // 搜索name和address列
+// Geocoding function using Google Maps API
+async function geocodeAddress(address) {
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${GOOGLE_MAPS_API_KEY}`;
+  try {
+    const response = await axios.get(url);
+    const data = response.data;
+    if (data.status === 'OK' && data.results.length > 0) {
+      return { latitude: data.results[0].geometry.location.lat, longitude: data.results[0].geometry.location.lng };
+    } else {
+      throw new Error(`Geocoding failed: ${data.status}`);
+    }
+  } catch (error) {
+    console.error(`Error geocoding address "${address}": ${error.message}`);
+    throw error;
   }
+}
+
+// Sleep function to respect rate limits
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// 新增的API端点，用于获取所有位置的信息并进行地理编码
+app.get('/api/locations', async (req, res) => {
+  const query = 'SELECT * FROM `location_info`';
 
   console.log(`Executing query: ${query}`); // Log the query for debugging
 
-  db.query(query, (err, results) => {
+  db.query(query, async (err, results) => {
     if (err) {
       console.error('Error executing query:', err);
       res.status(500).send(err);
     } else {
-      res.json(results);
-    }
-  });
-});
-
-// 新增的API端点，用于根据ID获取特定位置的信息
-app.get('/api/location/:id', (req, res) => {
-  const locationId = req.params.id;
-  const query = 'SELECT * FROM `location_info` WHERE id = ?';
-
-  console.log(`Executing query: ${query} with ID: ${locationId}`); // Log the query for debugging
-
-  db.query(query, [locationId], (err, results) => {
-    if (err) {
-      console.error('Error executing query:', err);
-      res.status(500).send(err);
-    } else if (results.length === 0) {
-      res.status(404).send('Location not found');
-    } else {
-      res.json(results[0]); // Assuming IDs are unique and returning the first match
+      try {
+        // Geocode addresses with a delay between requests
+        const geocodedResults = [];
+        for (const location of results) {
+          try {
+            const coords = await geocodeAddress(location.address);
+            geocodedResults.push({ ...location, latitude: coords.latitude, longitude: coords.longitude });
+          } catch (geocodingError) {
+            console.error(`Skipping address "${location.address}" due to geocoding error.`);
+          }
+          await sleep(1000); // 1 second delay between requests to respect rate limits
+        }
+        res.json(geocodedResults);
+      } catch (geocodingError) {
+        console.error('Error during geocoding:', geocodingError);
+        res.status(500).send('Error during geocoding');
+      }
     }
   });
 });

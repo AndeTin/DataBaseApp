@@ -28,7 +28,7 @@ function Home() {
   };
 
   useEffect(() => {
-    fetch('http://localhost:4001/api/locations/home')
+    fetch('http://localhost:4001/api/locations')
       .then(response => response.json())
       .then(data => setLocations(data))
       .catch(error => console.error('Error fetching locations:', error));
@@ -64,10 +64,8 @@ function Home() {
           ))}
         </MapContainer>
       </div>
-      <div id="info"></div>
     </div>
   );
 }
-
 
 export default Home;

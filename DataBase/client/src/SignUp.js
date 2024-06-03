@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './SignUp.css'; // Import the CSS file
 
 const SignUp = ({ switchToLogin }) => {
-  // Define state variables for form inputs
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -10,7 +9,6 @@ const SignUp = ({ switchToLogin }) => {
   const [birthday, setBirthday] = useState('');
   const [password, setPassword] = useState('');
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form submitted with state values:", {
@@ -22,13 +20,11 @@ const SignUp = ({ switchToLogin }) => {
       password
     });
 
-    // Check if any of the fields are empty
     if (!firstName || !lastName || !email || !gender || !birthday || !password) {
       alert('Please fill out all fields');
       return;
     }
 
-    // Check if email already exists in the database
     fetch('http://localhost:4001/api/check-email', {
       method: 'POST',
       headers: {
@@ -41,7 +37,6 @@ const SignUp = ({ switchToLogin }) => {
       if (data.exists) {
         alert('Email address is already registered');
       } else {
-        // Register the user
         fetch('http://localhost:4001/api/register', {
           method: 'POST',
           headers: {
@@ -60,6 +55,7 @@ const SignUp = ({ switchToLogin }) => {
         .then(data => {
           if (data.success) {
             alert('You have successfully registered');
+            switchToLogin();
           } else {
             alert('Registration failed. Please try again.');
           }
@@ -109,17 +105,16 @@ const SignUp = ({ switchToLogin }) => {
             value={gender}
             onChange={(e) => setGender(e.target.value)}
           >
-            <option value="" disabled defaultValue>選擇性別</option>
+            <option value="" disabled>選擇性別</option>
             <option value="male">男</option>
             <option value="female">女</option>
             <option value="other">其他</option>
           </select>
         </div>
         <div className="input-container">
-            <h4>生日</h4>
+          <h4>生日</h4>
           <input
             type="date"
-            placeholder="生日"
             value={birthday}
             onChange={(e) => setBirthday(e.target.value)}
           />
@@ -135,7 +130,7 @@ const SignUp = ({ switchToLogin }) => {
         <button type="submit">註冊</button>
       </form>
       <div className="switch">
-        已經有帳號了？ <a href="javascript:void(0)" onClick={switchToLogin}>登錄</a>
+        已經有帳號了？ <button onClick={switchToLogin} className="link-button">登錄</button>
       </div>
       <button onClick={() => window.location.href = '/'}>返回首頁</button>
     </div>

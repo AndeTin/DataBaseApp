@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({ onLoginSuccess, switchToSignUp }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -10,7 +10,6 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Send login request to server
     fetch('http://localhost:4001/api/login', {
       method: 'POST',
       headers: {
@@ -21,16 +20,11 @@ const Login = () => {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          // Login successful
           setMessage(data.message);
-
-          // Store user email in local storage
           localStorage.setItem('userEmail', email);
-
-          // Navigate to home page
+          onLoginSuccess();
           navigate('/');
         } else {
-          // Login failed
           setMessage(data.message);
         }
       })
@@ -62,7 +56,10 @@ const Login = () => {
         </div>
         <button type="submit">Login</button>
       </form>
-      <div>{message}</div> {/* Display login message */}
+      <div>{message}</div>
+      <div className="switch">
+        Don't have an account? <button onClick={switchToSignUp} className="link-button">Sign Up</button>
+      </div>
     </div>
   );
 };

@@ -58,6 +58,7 @@ app.get('/api/trail', (req, res) => {
       trail.trailid,
       city.city, 
       district.district,
+      trail.tr_dif_class,
       trail.tr_length
     FROM 
       trail 

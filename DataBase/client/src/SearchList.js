@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Switch from '@mui/material/Switch'; // Import the MUI Switch component
+import Switch from '@mui/material/Switch';
+import Checkbox from 'C:/Users/popol/Documents/GitHub/DataBaseApp/DataBase/client/node_modules/@mui/material/Checkbox/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
 import './App.css'; // Import the CSS file
 
 function useQuery() {
@@ -13,6 +16,8 @@ function SearchList() {
   const [trailData, setTrailData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [view, setView] = useState('location'); // State to manage the current view
+  const [checkedClass, setCheckedClass] = useState(null);
+  const [sortOrder, setSortOrder] = useState('asc');
   const query = useQuery();
   const navigate = useNavigate();
   const queryParam = query.get('query') || '';
@@ -70,6 +75,30 @@ function SearchList() {
     setView((prevView) => (prevView === 'location' ? 'trail' : 'location'));
   };
 
+  const handleClassChange = (event) => {
+    const selectedClass = event.target.value;
+    setCheckedClass(selectedClass);
+    sortTrailData(selectedClass, sortOrder);
+  };
+
+  const handleSortOrderChange = (event) => {
+    const newSortOrder = event.target.checked ? 'desc' : 'asc';
+    setSortOrder(newSortOrder);
+    sortTrailData(checkedClass, newSortOrder);
+  };
+
+  const sortTrailData = (selectedClass, order) => {
+    const sortedData = [...trailData].sort((a, b) => {
+      const diff = a.tr_dif_class - b.tr_dif_class;
+      if (selectedClass) {
+        if (a.tr_dif_class === Number(selectedClass)) return -1;
+        if (b.tr_dif_class === Number(selectedClass)) return 1;
+      }
+      return order === 'asc' ? diff : -diff;
+    });
+    setTrailData(sortedData);
+  };
+
   return (
     <div className="SearchList">
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -121,12 +150,44 @@ function SearchList() {
       ) : (
         <div>
           <h2>Trail Data</h2>
+          <div className="sorting-controls">
+            <div className="sorting-class">
+              <span>Searching by class:</span>
+              <FormGroup row>
+                {[1, 2, 3, 4, 5].map((num) => (
+                  <FormControlLabel
+                    key={num}
+                    control={
+                      <Checkbox
+                        checked={checkedClass === num.toString()}
+                        onChange={handleClassChange}
+                        value={num}
+                        name={`class-${num}`}
+                      />
+                    }
+                    label={num}
+                  />
+                ))}
+              </FormGroup>
+            </div>
+            <div className="sorting-order">
+              <span>Sort order:</span>
+              <Switch
+                checked={sortOrder === 'desc'}
+                onChange={handleSortOrderChange}
+                name="sortOrder"
+                inputProps={{ 'aria-label': 'sort order' }}
+              />
+              <span>{sortOrder === 'desc' ? 'Descending' : 'Ascending'}</span>
+            </div>
+          </div>
           {trailData.map(trail => (
             <div key={trail.trailid} className="item">
               <span className="title">{trail.tr_cname}</span>
               <div className="details">
                 <p>所屬城市: {trail.city}</p>
                 <p>所屬區域: {trail.district}</p>
+                <p>步道難度: {trail.tr_dif_class}</p>
                 <p>步道長度: {trail.tr_length}</p>
               </div>
               <button 

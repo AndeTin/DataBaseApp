@@ -61,14 +61,7 @@ function SearchList() {
   };
 
   const handleSeeMoreTrail = (id) => {
-    axios.get(`http://localhost:4001/api/trail/${id}`)
-      .then(response => {
-        console.log('Trail details:', response.data); // Log response for debugging
-        navigate(`/trailInfo`, { state: response.data }); // Route to trailInfo page with trail data
-      })
-      .catch(error => {
-        console.error('Error fetching trail details:', error);
-      });
+    navigate(`/trail/${id}`);
   };
 
   return (
@@ -111,9 +104,9 @@ function SearchList() {
         <h2>Trail Data</h2>
         {trailData.map(trail => (
           <div key={trail.id} className="trail-item">
-            <span className="trail-title">{trail.tr_cname}</span>
+            <br/>
+            <b><span className="trail-title">{trail.tr_cname}</span></b>
             <div className="trail-details">
-              <p>步道名稱: {trail.tr_cname}</p>
               <p>所屬城市: {trail.city}</p>
               <p>所屬區域: {trail.district}</p>
               <p>步道長度: {trail.tr_length}</p>

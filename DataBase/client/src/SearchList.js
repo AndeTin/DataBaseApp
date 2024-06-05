@@ -61,7 +61,14 @@ function SearchList() {
   };
 
   const handleSeeMoreTrail = (id) => {
-    navigate(`/trail/${id}`);
+    axios.get(`http://localhost:4001/api/trail/${id}`)
+      .then(response => {
+        console.log('Trail details:', response.data); // Log response for debugging
+        navigate(`/trailInfo`, { state: response.data }); // Route to trailInfo page with trail data
+      })
+      .catch(error => {
+        console.error('Error fetching trail details:', error);
+      });
   };
 
   return (
@@ -73,7 +80,7 @@ function SearchList() {
             type="text"
             value={searchTerm}
             onChange={handleSearchChange}
-            placeholder="Search..."
+            placeholder="輸入關鍵字搜尋..."
             style={{ marginRight: '10px' }}
           />
           <button type="submit" style={{ marginRight: '10px' }}>Search</button>
@@ -113,7 +120,7 @@ function SearchList() {
             </div>
             <button 
               className="see-more-button" 
-              onClick={() => handleSeeMoreTrail(trail.id)} 
+              onClick={() => handleSeeMoreTrail(trail.trailid)} 
               style={{ marginLeft: '10px' }}
             >
               查看更多

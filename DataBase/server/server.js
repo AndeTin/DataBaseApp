@@ -55,6 +55,7 @@ app.get('/api/trail', (req, res) => {
   const query = `
     SELECT 
       trail.tr_cname, 
+      trail.trailid,
       city.city, 
       district.district,
       trail.tr_length
@@ -66,7 +67,7 @@ app.get('/api/trail', (req, res) => {
       trail.tr_cname LIKE ? OR city.city LIKE ? OR district.district LIKE ?
   `;
 
-  db.query(query, [`%${searchTerm}%`, `%${searchTerm}%`,`%${searchTerm}%`, `%${searchTerm}%`], (err, results) => {
+  db.query(query, [`%${searchTerm}%`, `%${searchTerm}%`, `%${searchTerm}%`], (err, results) => {
     if (err) {
       console.error('Error searching trail data:', err);
       res.status(500).send(err);
@@ -95,7 +96,7 @@ app.post('/api/check-email', (req, res) => {
 // API endpoint to register a new user
 app.post('/api/register', (req, res) => {
   const { User_first_name, User_last_name, User_email, User_gender, User_birthday, User_passwd } = req.body;
-  const query = 'INSERT INTO user (User_first_name, User_last_name, User_email, User_gender, User_birthday, User_passwd, User_permission) VALUES (?, ?, ?, ?, ?, ? , 0)';
+  const query = 'INSERT INTO user (User_first_name, User_last_name, User_email, User_gender, User_birthday, User_passwd, User_permission) VALUES (?, ?, ?, ?, ?, ?, 0)';
   
   db.query(query, [User_first_name, User_last_name, User_email, User_gender, User_birthday, User_passwd], (err, results) => {
     if (err) {
@@ -149,8 +150,9 @@ app.get('/api/location/:id', (req, res) => {
   });
 });
 
-app.get('/api/trail/:id', (req, res) => {
-  const trailId = req.params.id;
+// API endpoint to get trail details by trail ID
+app.get('/api/trail/:trailid', (req, res) => {
+  const trailId = req.params.trailid;
   const query = `
     SELECT 
       trail.tr_cname, 
@@ -184,4 +186,9 @@ app.get('/api/trail/:id', (req, res) => {
       }
     }
   });
+});
+
+// Start the server
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });

@@ -32,10 +32,12 @@ function SearchList() {
   }, [queryParam]);
 
   useEffect(() => {
-    if (view === 'trail') {
-      filterTrailData();
+    if (checkedClass !== null) {
+      setFilteredTrailData(trailData.filter(trail => trail.tr_dif_class === Number(checkedClass)));
+    } else {
+      setFilteredTrailData(trailData);
     }
-  }, [trailData, checkedClass, view]);
+  }, [trailData, checkedClass]);
 
   const fetchData = (query = '') => {
     console.log(`Fetching data with query: ${query}`); // Log for debugging
@@ -52,19 +54,11 @@ function SearchList() {
       .then(response => {
         console.log('Trail data:', response.data); // Log response for debugging
         setTrailData(response.data);
-        setFilteredTrailData(response.data); // Initialize filtered trail data
+        setFilteredTrailData(response.data);
       })
       .catch(error => {
         console.error('Error fetching trail data:', error);
       });
-  };
-
-  const filterTrailData = () => {
-    if (checkedClass) {
-      setFilteredTrailData(trailData.filter(trail => trail.tr_dif_class === Number(checkedClass)));
-    } else {
-      setFilteredTrailData(trailData);
-    }
   };
 
   const handleSearchChange = (e) => {
@@ -90,7 +84,7 @@ function SearchList() {
 
   const toggleView = () => {
     setView((prevView) => (prevView === 'location' ? 'trail' : 'location'));
-    setCheckedClass(null); // Reset checked class when toggling view
+    setCheckedClass(null); // Reset the checkbox selection when toggling views
   };
 
   const handleClassChange = (event) => {
@@ -99,8 +93,10 @@ function SearchList() {
 
     if (isChecked) {
       setCheckedClass(selectedClass);
+      setFilteredTrailData(trailData.filter(trail => trail.tr_dif_class === Number(selectedClass)));
     } else {
       setCheckedClass(null);
+      setFilteredTrailData(trailData);
     }
   };
 

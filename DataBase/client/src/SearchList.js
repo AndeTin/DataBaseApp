@@ -159,7 +159,7 @@ function SearchList() {
                     key={num}
                     control={
                       <Checkbox
-                        checked={checkedClass === num.toString()}
+                        checked={checkedClass === null ? false : checkedClass === `${num}`}
                         onChange={handleClassChange}
                         value={num}
                         name={`class-${num}`}

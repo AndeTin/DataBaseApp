@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Switch from '@mui/material/Switch'; // Import the MUI Switch component
 import './App.css'; // Import the CSS file
 
 function useQuery() {
@@ -85,14 +86,20 @@ function SearchList() {
           <button type="button" onClick={handleGoHome}>回到首頁</button>
         </form>
       </header>
-      <div>
-        <button onClick={toggleView}>
-          {view === 'location' ? '顯示步道資訊' : '顯示地點資訊'}
-        </button>
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+        <span>顯示地點資訊</span>
+        <Switch
+          checked={view === 'trail'}
+          onChange={toggleView}
+          color="primary"
+          inputProps={{ 'aria-label': 'toggle view' }}
+          style={{ marginLeft: '0px', marginRight: '10px' }}
+        />
+        <span>顯示步道資訊</span>
       </div>
       {view === 'location' ? (
         <div>
-          <h2>Location Data</h2>
+          <h2>地點資訊</h2>
           {locationData.map(location => (
             <div key={location.id} className="location-item">
               <span className="location-title">{location.location_name}</span>
@@ -113,7 +120,7 @@ function SearchList() {
         </div>
       ) : (
         <div>
-          <h2>Trail Data</h2>
+          <h2>步道資訊</h2>
           {trailData.map(trail => (
             <div key={trail.trailid} className="trail-item">
               <span className="trail-title">{trail.tr_cname}</span>

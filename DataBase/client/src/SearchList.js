@@ -31,6 +31,12 @@ function SearchList() {
     }
   }, [queryParam]);
 
+  useEffect(() => {
+    if (view === 'trail') {
+      filterTrailData();
+    }
+  }, [trailData, checkedClass, view]);
+
   const fetchData = (query = '') => {
     console.log(`Fetching data with query: ${query}`); // Log for debugging
     axios.get(`http://localhost:4001/api/location?search=${query}`)
@@ -46,11 +52,19 @@ function SearchList() {
       .then(response => {
         console.log('Trail data:', response.data); // Log response for debugging
         setTrailData(response.data);
-        setFilteredTrailData(response.data);
+        setFilteredTrailData(response.data); // Initialize filtered trail data
       })
       .catch(error => {
         console.error('Error fetching trail data:', error);
       });
+  };
+
+  const filterTrailData = () => {
+    if (checkedClass) {
+      setFilteredTrailData(trailData.filter(trail => trail.tr_dif_class === Number(checkedClass)));
+    } else {
+      setFilteredTrailData(trailData);
+    }
   };
 
   const handleSearchChange = (e) => {
@@ -76,6 +90,7 @@ function SearchList() {
 
   const toggleView = () => {
     setView((prevView) => (prevView === 'location' ? 'trail' : 'location'));
+    setCheckedClass(null); // Reset checked class when toggling view
   };
 
   const handleClassChange = (event) => {
@@ -84,10 +99,8 @@ function SearchList() {
 
     if (isChecked) {
       setCheckedClass(selectedClass);
-      setFilteredTrailData(trailData.filter(trail => trail.tr_dif_class === Number(selectedClass)));
     } else {
       setCheckedClass(null);
-      setFilteredTrailData(trailData);
     }
   };
 

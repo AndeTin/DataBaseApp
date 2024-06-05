@@ -77,7 +77,11 @@ function SearchList() {
 
   const handleClassChange = (event) => {
     const selectedClass = event.target.value;
-    setCheckedClass(selectedClass);
+    if (checkedClass === selectedClass) {
+      setCheckedClass(null); // Uncheck if the same checkbox is clicked
+    } else {
+      setCheckedClass(selectedClass);
+    }
     sortTrailData(selectedClass, sortOrder);
   };
 

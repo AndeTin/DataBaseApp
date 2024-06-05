@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Switch from '@mui/material/Switch';
-import Checkbox from 'C:/Users/popol/Documents/GitHub/DataBaseApp/DataBase/client/node_modules/@mui/material/Checkbox/Checkbox';
+import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import './App.css'; // Import the CSS file

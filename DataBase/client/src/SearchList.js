@@ -14,10 +14,10 @@ function useQuery() {
 function SearchList() {
   const [locationData, setLocationData] = useState([]);
   const [trailData, setTrailData] = useState([]);
+  const [filteredTrailData, setFilteredTrailData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [view, setView] = useState('location'); // State to manage the current view
   const [checkedClass, setCheckedClass] = useState(null);
-  const [sortOrder, setSortOrder] = useState('asc');
   const query = useQuery();
   const navigate = useNavigate();
   const queryParam = query.get('query') || '';
@@ -44,6 +44,7 @@ function SearchList() {
       .then(response => {
         console.log('Trail data:', response.data); // Log response for debugging
         setTrailData(response.data);
+        setFilteredTrailData(response.data);
       })
       .catch(error => {
         console.error('Error fetching trail data:', error);
@@ -77,30 +78,15 @@ function SearchList() {
 
   const handleClassChange = (event) => {
     const selectedClass = event.target.value;
-    if (checkedClass === selectedClass) {
-      setCheckedClass(null); // Uncheck if the same checkbox is clicked
-    } else {
+    const isChecked = event.target.checked;
+
+    if (isChecked) {
       setCheckedClass(selectedClass);
+      setFilteredTrailData(trailData.filter(trail => trail.tr_dif_class === Number(selectedClass)));
+    } else {
+      setCheckedClass(null);
+      setFilteredTrailData(trailData);
     }
-    sortTrailData(selectedClass, sortOrder);
-  };
-
-  const handleSortOrderChange = (event) => {
-    const newSortOrder = event.target.checked ? 'desc' : 'asc';
-    setSortOrder(newSortOrder);
-    sortTrailData(checkedClass, newSortOrder);
-  };
-
-  const sortTrailData = (selectedClass, order) => {
-    const sortedData = [...trailData].sort((a, b) => {
-      const diff = a.tr_dif_class - b.tr_dif_class;
-      if (selectedClass) {
-        if (a.tr_dif_class === Number(selectedClass)) return -1;
-        if (b.tr_dif_class === Number(selectedClass)) return 1;
-      }
-      return order === 'asc' ? diff : -diff;
-    });
-    setTrailData(sortedData);
   };
 
   return (
@@ -156,14 +142,14 @@ function SearchList() {
           <h2>Trail Data</h2>
           <div className="sorting-controls">
             <div className="sorting-class">
-              <span>Searching by class:</span>
+              <span>Filter by class:</span>
               <FormGroup row>
                 {[1, 2, 3, 4, 5].map((num) => (
                   <FormControlLabel
                     key={num}
                     control={
                       <Checkbox
-                        checked={checkedClass === null ? false : checkedClass === `${num}`}
+                        checked={checkedClass === `${num}`}
                         onChange={handleClassChange}
                         value={num}
                         name={`class-${num}`}
@@ -174,18 +160,8 @@ function SearchList() {
                 ))}
               </FormGroup>
             </div>
-            <div className="sorting-order">
-              <span>Sort order:</span>
-              <Switch
-                checked={sortOrder === 'desc'}
-                onChange={handleSortOrderChange}
-                name="sortOrder"
-                inputProps={{ 'aria-label': 'sort order' }}
-              />
-              <span>{sortOrder === 'desc' ? 'Descending' : 'Ascending'}</span>
-            </div>
           </div>
-          {trailData.map(trail => (
+          {filteredTrailData.map(trail => (
             <div key={trail.trailid} className="item">
               <span className="title">{trail.tr_cname}</span>
               <div className="details">

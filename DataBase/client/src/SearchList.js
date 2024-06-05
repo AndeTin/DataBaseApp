@@ -87,7 +87,7 @@ function SearchList() {
         </form>
       </header>
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-        <span>顯示地點資訊</span>
+        <span>Show Location Data</span>
         <Switch
           checked={view === 'trail'}
           onChange={toggleView}
@@ -95,15 +95,15 @@ function SearchList() {
           inputProps={{ 'aria-label': 'toggle view' }}
           style={{ marginLeft: '0px', marginRight: '10px' }}
         />
-        <span>顯示步道資訊</span>
+        <span>Show Trail Data</span>
       </div>
       {view === 'location' ? (
         <div>
-          <h2>地點資訊</h2>
+          <h2>Location Data</h2>
           {locationData.map(location => (
-            <div key={location.id} className="location-item">
-              <span className="location-title">{location.location_name}</span>
-              <div className="location-details">
+            <div key={location.id} className="item">
+              <span className="title">{location.location_name}</span>
+              <div className="details">
                 <p>開門時間: {location.opening_time}</p>
                 <p>打烊時間: {location.closing_time}</p>
                 <p>地址: {location.address}</p>
@@ -120,11 +120,11 @@ function SearchList() {
         </div>
       ) : (
         <div>
-          <h2>步道資訊</h2>
+          <h2>Trail Data</h2>
           {trailData.map(trail => (
-            <div key={trail.trailid} className="trail-item">
-              <span className="trail-title">{trail.tr_cname}</span>
-              <div className="trail-details">
+            <div key={trail.trailid} className="item">
+              <span className="title">{trail.tr_cname}</span>
+              <div className="details">
                 <p>所屬城市: {trail.city}</p>
                 <p>所屬區域: {trail.district}</p>
                 <p>步道長度: {trail.tr_length}</p>

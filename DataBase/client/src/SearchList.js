@@ -26,6 +26,8 @@ function SearchList() {
     if (queryParam) {
       setSearchTerm(queryParam);
       fetchData(queryParam);
+    } else {
+      fetchData();
     }
   }, [queryParam]);
 

@@ -59,7 +59,8 @@ app.get('/api/trail', (req, res) => {
       city.city, 
       district.district,
       trail.tr_dif_class,
-      trail.tr_length
+      trail.tr_length,
+      trail.tr_tour
     FROM 
       trail 
       LEFT JOIN city ON trail.city_id = city.city_id 

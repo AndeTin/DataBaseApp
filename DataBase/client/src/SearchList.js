@@ -17,7 +17,8 @@ function SearchList() {
   const [filteredTrailData, setFilteredTrailData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [view, setView] = useState('location'); // State to manage the current view
-  const [checkedClass, setCheckedClass] = useState(null);
+  const [checkedClasses, setCheckedClasses] = useState([]);
+  const [checkedTours, setCheckedTours] = useState([]);
   const query = useQuery();
   const navigate = useNavigate();
   const queryParam = query.get('query') || '';
@@ -30,14 +31,6 @@ function SearchList() {
       fetchData();
     }
   }, [queryParam]);
-
-  useEffect(() => {
-    if (checkedClass !== null) {
-      setFilteredTrailData(trailData.filter(trail => trail.tr_dif_class === Number(checkedClass)));
-    } else {
-      setFilteredTrailData(trailData);
-    }
-  }, [trailData, checkedClass]);
 
   const fetchData = (query = '') => {
     console.log(`Fetching data with query: ${query}`); // Log for debugging
@@ -83,21 +76,48 @@ function SearchList() {
   };
 
   const toggleView = () => {
-    setView((prevView) => (prevView === 'location' ? 'trail' : 'location'));
-    setCheckedClass(null); // Reset the checkbox selection when toggling views
+    setView((prevView) => {
+      if (prevView === 'location') {
+        setCheckedClasses([]);
+        setCheckedTours([]);
+      }
+      return prevView === 'location' ? 'trail' : 'location';
+    });
   };
 
   const handleClassChange = (event) => {
     const selectedClass = event.target.value;
     const isChecked = event.target.checked;
 
-    if (isChecked) {
-      setCheckedClass(selectedClass);
-      setFilteredTrailData(trailData.filter(trail => trail.tr_dif_class === Number(selectedClass)));
-    } else {
-      setCheckedClass(null);
-      setFilteredTrailData(trailData);
+    const updatedCheckedClasses = isChecked
+      ? [...checkedClasses, selectedClass]
+      : checkedClasses.filter(item => item !== selectedClass);
+
+    setCheckedClasses(updatedCheckedClasses);
+    filterTrailData(updatedCheckedClasses, checkedTours);
+  };
+
+  const handleTourChange = (event) => {
+    const selectedTour = event.target.value;
+    const isChecked = event.target.checked;
+
+    const updatedCheckedTours = isChecked
+      ? [...checkedTours, selectedTour]
+      : checkedTours.filter(tour => tour !== selectedTour);
+
+    setCheckedTours(updatedCheckedTours);
+    filterTrailData(checkedClasses, updatedCheckedTours);
+  };
+
+  const filterTrailData = (selectedClasses, selectedTours) => {
+    let filteredData = trailData;
+    if (selectedClasses.length > 0) {
+      filteredData = filteredData.filter(trail => selectedClasses.includes(`${trail.tr_dif_class}`));
     }
+    if (selectedTours.length > 0) {
+      filteredData = filteredData.filter(trail => selectedTours.includes(trail.tr_tour));
+    }
+    setFilteredTrailData(filteredData);
   };
 
   return (
@@ -160,7 +180,7 @@ function SearchList() {
                     key={num}
                     control={
                       <Checkbox
-                        checked={checkedClass === `${num}`}
+                        checked={checkedClasses.includes(`${num}`)}
                         onChange={handleClassChange}
                         value={num}
                         name={`class-${num}`}
@@ -171,15 +191,35 @@ function SearchList() {
                 ))}
               </FormGroup>
             </div>
+            <div className="sorting-tour">
+              <span>Filter by tour:</span>
+              <FormGroup row>
+                {['半天', '一天', '一天以上'].map((tour) => (
+                  <FormControlLabel
+                    key={tour}
+                    control={
+                      <Checkbox
+                        checked={checkedTours.includes(tour)}
+                        onChange={handleTourChange}
+                        value={tour}
+                        name={`tour-${tour}`}
+                      />
+                    }
+                    label={tour}
+                  />
+                ))}
+              </FormGroup>
+            </div>
           </div>
-          {filteredTrailData.map(trail => (
-            <div key={trail.trailid} className="item">
+          {filteredTrailData.map((trail, index) => (
+            <div key={trail.trailid || index} className="item">
               <span className="title">{trail.tr_cname}</span>
               <div className="details">
                 <p>所屬城市: {trail.city}</p>
                 <p>所屬區域: {trail.district}</p>
                 <p>步道難度: {trail.tr_dif_class}</p>
                 <p>步道長度: {trail.tr_length}</p>
+                <p>旅遊時間: {trail.tr_tour}</p>
               </div>
               <button 
                 className="see-more-button" 

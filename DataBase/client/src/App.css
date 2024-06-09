@@ -1,6 +1,5 @@
 /* App.css */
 
-
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -107,4 +106,24 @@ header form input[type="text"] {
 
 .switch-container span {
   margin: 0 10px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.info-container {
+  background-color: #444;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.map-container {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
 }
